@@ -9,7 +9,7 @@ int openandlock( const char* file );
 
 int main( int argc, char** argv){
   openandlock("/tmp/test.file");
-  sleep(10);
+  while(1) sleep(10);
   return 0;
 }
 
@@ -24,7 +24,7 @@ int openandlock( const char* file ) {
     perror(str);
     exit(-1);
   }
-  if( flock(openfd, LOCK_EX) != 0 ) {
+  if( flock(openfd, LOCK_EX|LOCK_NB) != 0 ) {
     char errormsg[] = "Failed to open file %*s for read/write: ";
     char* str = (char*)malloc(
       sizeof(char) * ( strlen(errormsg) + strlen(file) ) 
